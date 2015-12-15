@@ -1,0 +1,38 @@
+a=scan("rs1042778NR.csv")
+b=scan("rs1042778R.csv")
+
+#probability density plot
+hista = hist(a,breaks=8,plot = FALSE) #make a histogram of data in “a”, store in variable “hista”, breaks determines binning, display off
+histb = hist(b,breaks=8,plot = FALSE) #same for histogram of “b”
+
+#plot first histogram
+plot(histb, #display histb
+   xlim = range(-75,75), #manually set range of x-axis
+   ylim = range(0,.05), #manually set range of y-axis
+   xaxp = c(-75,75,6), #manually set x-axis tick-mark extremes and interval
+   col = rgb(1,0,0,0.5), #set color and transparency of histb
+   freq = FALSE, #display probability distribution rather than frequencies
+   xlab = 'Upright Inverted Minimum Latency Difference', #label x-axis
+   ylab = "Probability Density", #label y-axis
+   main = 'rs1042778') #label chart
+
+# plot the second graph on top of this
+opar = par(new = FALSE) #retain previously specified graphical parameters
+plot(hista, #display hista
+   col = rgb(0,0,1,0.5), #set color and transparency of hista
+   add = TRUE, #add this plot, oddly necessary
+   freq = FALSE) # display probability distribution rather than frequencies
+
+# add a legend in the corner
+legend('topright', #add legend and location
+   c('Risk','No-Risk'), #label legend values, order depends on which plot you added first
+   fill = rgb(1:0,0,0:1,0.5), #add color, rgb(col_a:col_b,,,transparency)
+   bty = 'n', border = NA) #box around legend (off) and border color
+
+#Curves and Lines
+curve(dnorm(x, mean=mean(a), sd=sd(a)),add=TRUE, col="blue", lwd = 3) #curve dnorm (for prob. dist.) of “a”, lwd defines line width
+curve(dnorm(x, mean=mean(b), sd=sd(b)),add=TRUE, col="red", lwd = 3) #curve dnorm (for prob. dist.) of “b”, lwd defines line width
+
+abline(v = 0, col = "black", lwd = 2) #add vertical black line at x=0
+abline(v = mean(a), col = "blue", lwd = 2) #add vertical blue line at mean of “a”
+abline(v = mean(b), col = "red", lwd = 2) #add vertical blue line at mean of “b”
